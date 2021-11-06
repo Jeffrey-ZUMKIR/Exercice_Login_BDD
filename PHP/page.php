@@ -27,7 +27,7 @@
 		//Savoir si c'est un prof ou élève
 		$session = $_SESSION;
 		$user = getUser($connexion, $session)[0];
-		var_dump($user);
+		//var_dump($user);
 		$currentUser = $user['lib_type'];
 		$loginUser = $user['login'];
 		/*$compte = getCompte($connexionBDD);
@@ -76,30 +76,43 @@
 	?>
 
 	<?php 
+	var_dump($user);
 		//$noteEleve[] = getNoteEleve($connexionBDD);
 		//Affiche tableaux des notes en fonction de si c'est un professeur ou un élève
-		if($currentUser == 'professeur'){
-			echo'<table id="tableEtudiant" style="width: 300px;margin:0 auto">
-					<thead>
-						<tr>
-							<th colspan="2">'./*getPrenomNomProf($keyUser,$listProf)*/$user['prenom'].' '.$user['nom'].'<br/>'.$loginUser.'<br/>';
-			if(is_file('./image/'.$loginUser.'.png')){
-				echo '<img src="../image/'.$loginUser.'.png" style="width:200px;height:200px">';
-			}else{
-				echo '<img src="../image/Default.png" style="width:200px;height:200px">';
-			}
-			
+		echo'<table id="tableEtudiant" style="width: 300px;margin:0 auto">
+				<thead>
+					<tr>
+						<th colspan="2">'./*getPrenomNomProf($keyUser,$listProf)*/$user['prenom'].' '.$user['nom'].'<br/>'.$loginUser.'<br/>';
+		if(is_file('../image/'.$loginUser.'.png')){
+			echo '<img src="../image/'.$loginUser.'.png" style="width:200px;height:200px">';
+		}else{
+			echo '<img src="../image/Default.png" style="width:200px;height:200px">';
+		}
+		
 
-			echo			'</th>
-						</tr>
-						<tr>
-							<th>Elève</th>
-							<th>Note</th>
-						</tr>
-					</thead>
-					<tbody>';
+		echo			'</th>
+					</tr>
+					<tr>
+						<th>';
+		if($currentUser == 'professeur'){
+			echo 'Elève';
+		}else if($currentUser == 'etudiant'){
+			echo 'Matière';
+		}
+		echo'			</th>
+						<th>Note</th>
+					</tr>
+				</thead>
+				<tbody>';
+
+
+		if($currentUser == 'professeur'){
 			//Afficher les notes des élèves
 			//afficheNoteEleve($connexion);
+			$note = getNoteGroupe($connexion, $user);
+			showNoteGroupe();
+
+			
 			/*foreach ($noteEleve[0] as $key => $value) {
 				if($value['matiere_test'] == $class){
 					echo '<tr>';
@@ -109,64 +122,23 @@
 				}
 			}*/
 
+			/*echo '	</tbody>
+				</table>';*/
 			echo '	</tbody>
-				</table>';
+			</table>';
 		}else if($currentUser == 'etudiant'){
-			echo'<table id="tableEtudiant" style="width: 300px;margin:0 auto">
-					<thead>
-						<tr>
-							<th colspan="2">'./*getPrenomNomEleve($keyUser,$listEleve)*/$user['prenom'].' '.$user['nom'].'<br/>'.$loginUser.'<br/>';
-			if(is_file('./image/'.$loginUser.'.png')){
-				echo '<img src="./image/'.$loginUser.'.png" style="width:200px;height:200px">';
-			}else{
-				echo '<img src="./image/Default.png" style="width:200px;height:200px">';
-			}
-
-			echo			'</th>
-						</tr>
-						<tr>
-							<th>Matière</th>
-							<th>Note</th>
-						</tr>
-					</thead>
-					<tbody>';
 			//Afficher les notes de l'élève
-			//$nbNote = getNbNoteEtud($connexionBDD,$keyUser);
-			if($nbNote[0]['nbNote']!=0){
-				foreach ($noteEleve[0] as $key => $value) {
-					if($value['nom_etudiant'] == $keyUser){
-						echo '<tr>';
-						echo '<td>'.$value['matiere_test'].'</td>';
-						echo '<td>'.$value['valeur'].'</td>';
-						echo '</tr>';
-					}
-				}
-				echo '<tr>';
-				echo '<td>Moyenne</td>';
-				//Afficher la moyenne général
-				$req3 = 'SELECT avg(valeur) as moyenne
-						FROM listeetudiant, listenote
-						WHERE listeetudiant.id_etudiant = listenote.id_etudiant and nom_etudiant = "'.$keyUser.'"
-						GROUP BY listenote.id_etudiant';
-				foreach ($connexionBDD->query($req3) as $key3 => $value3) {
-					echo '<td>'.round($value3['moyenne'],2).'</td>';
-				}
-						
-				echo '</tr>';
-			}else{
-				echo '<tr>';
-				echo '<td colspan = "2">No Data Found</td>';
-				echo '</tr>';
-			}
-			
-
+			$note = getNoteEtud($connexion, $user['id_compte']);
+			showNoteEtud($connexion, $note, $user);
 			echo '	</tbody>
-				</table>';
+			</table>';
+
 		}
+		/**/
 	?>
 	
 
-	<?php
+	<!--<?php
 		if ($currentUser == "professeur") {
 			//Formulaire pour ajouter une nouvelle note
 			echo '<form action="#" method="post">
@@ -338,10 +310,10 @@
 						</form>';
 			/*}*/
 		}
-	?>
+	?>-->
 	
 	<?php 
-		echo '<a href="logout2.php"><p style="text-align: center">Déconnexion</p></a>';
+		echo '<a href="logout.php"><p style="text-align: center">Déconnexion</p></a>';
 	?>
 
 </body>
