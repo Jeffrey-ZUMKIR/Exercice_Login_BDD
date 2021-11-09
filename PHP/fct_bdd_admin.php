@@ -218,4 +218,43 @@ function removeFromGroupe($connexion, $id_compte, $id_groupe){
 	}
 }
 
+function getCompte($connexion){
+	$cpt = [];
+	$req = 'SELECT id_compte, nom, prenom
+			FROM compte;';
+
+	try{
+		//Préparer et exécuter la requête
+		$stmt = $connexion->query($req);
+		//On récupère les données sous forme d'un tableau
+		while($donnees = $stmt->fetch(PDO::FETCH_ASSOC)){
+			$cpt[]=$donnees;
+		}
+		//On ferme la base
+		$stmt->closeCursor();
+		return $cpt;
+	}
+	catch(PDOException $e){
+		echo "Erreur : ".$e->getMessage();
+	}
+}
+
+function removeCompte($connexion, $idcompte){
+	$req = 'DELETE FROM compte WHERE id_compte = :id_compte';
+
+	try{
+		//requête préparée
+		$stmt = $connexion->prepare($req);
+
+		//Avec bindvalue
+		$stmt->bindValue(':id_compte',$idcompte,PDO::PARAM_STR);
+
+		//Exécuter la requête
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo 'Erreur : '.$e->getMessage();
+	}
+}
+
 ?>

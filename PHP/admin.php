@@ -50,7 +50,13 @@
 				}
 				echo '<script>alert("Retirer du groupe!")</script>';
 			}
-			
+		}
+
+		if(isset($_POST["removeCompte"])){
+			$post = $_POST;
+			if(isset($post['compte'])){
+				removeCompte($connexion, $post['compte']);
+			}
 		}
 
 
@@ -157,10 +163,35 @@
 				echo '			</select>';
 
 				echo '		<input type="hidden" name=groupe value="'.$_POST["groupe"].'">';
-				echo '		<input type="submit" name="removeFromGroupe">';
+		?>
+			<a href="#"onclick="return(confirm('Etes-vous sûr de vouloir retirer cette élève?'));"><input type = "submit" name = "removeFromGroupe"></a>
+		<?php
+				//echo '		<input type="submit" name="removeFromGroupe">';
 				echo '	</fieldset>
 					</form>';
 			}
+
+			echo '		</fieldset>
+					</form>';
+
+		?>
+		<?php
+			echo '	<form action="#" method="post">
+						<fieldset style="width: 90%;margin: 0 auto"><legend>Supprimer un compte</legend>';
+
+			$comptes = getCompte($connexion);
+
+			echo '		<select name="compte">';
+
+			foreach ($comptes as $key => $value) {
+				echo '<option value="'.$value["id_compte"].'">'.$value["nom"].' '.$value["prenom"].'</option>';
+			}
+
+
+			echo '		</select>';
+		?>
+			<a href="#"onclick="return(confirm('Etes-vous sûr de vouloir supprimer ce compte?'));"><input type = "submit" name = "removeCompte"></a>
+		<?php
 
 			echo '		</fieldset>
 					</form>';
