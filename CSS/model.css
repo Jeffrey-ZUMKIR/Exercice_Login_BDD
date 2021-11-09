@@ -2,8 +2,6 @@
 	font-size: 18px
 }
 body{
-	background-image: linear-gradient(rgba(88,142,227,0.5), rgba(48,113,216,0.7));
-	/*background: repeating-radial-gradient(farthest-side ellipse at center, green, red, green 80px);*/
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-size: 1920px 1080px;
@@ -50,9 +48,9 @@ footer {
 	border: groove 5px green;
 }
 
-.column {
+/*.column {
   float: left;
-  width: 50%;
+  width: 33%;
   padding: 5px;
 }
 
@@ -60,4 +58,4 @@ footer {
   content: "";
   clear: both;
   display: table;
-}
+}*/

@@ -171,7 +171,7 @@
 				foreach ($compte as $key => $value) {
 					if($_POST["login"]==$value['login'] && $_POST["password"]==$value['passwd']){
 						$_SESSION["login"]=$value['login'];
-						header("Location: ./page.php");
+						header("Location: ./checkType.php");
 						$bool = true;
 					}
 				}

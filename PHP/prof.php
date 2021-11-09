@@ -8,6 +8,7 @@
 	<meta charset="utf-8">
 	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 	<link rel="stylesheet" type="text/css" href="../CSS/style.css">
+	<link rel="stylesheet" type="text/css" href="../CSS/modelProf.css">
 	<style type="text/css">
 		table, th, td{
 			border:black solid 1px;
@@ -32,26 +33,6 @@
 		//var_dump($user);
 		$currentUser = $user['lib_type'];
 		$loginUser = $user['login'];
-		/*$compte = getCompte($connexionBDD);
-		foreach ($compte as $key => $value) {
-			if($value['login']==$_SESSION['login']){
-				$currentUser = $value['type'];
-				$loginUser = $value['login'];
-			}
-		}*/
-
-
-		//$listProf[] = getListeProf($connexionBDD);
-
-		//Modifier le keyuser en fonction de la personne
-		/*if($currentUser == 'professeur'){	
-			$keyU = getUserKeyProf($connexionBDD,$_SESSION['login']);	
-			$keyUser = $keyU[0]['nom_prof'];
-			$class = getClass($keyUser,$listProf);
-		}else{
-			$keyU = getUserKeyEtud($connexionBDD,$_SESSION['login']);
-			$keyUser = $keyU[0]['nom_etudiant'];
-		}*/
 
 
 		$post = $_POST;
@@ -64,16 +45,12 @@
 		
 
 		//Set css
-		if($currentUser == 'professeur'){
+		/*if($currentUser == 'professeur'){
 			echo'<link rel="stylesheet" type="text/css" href="../CSS/modelProf.css"> ';
 		}else{
 			echo'<link rel="stylesheet" type="text/css" href="../CSS/modelEtudiant.css"> ';
-		}
+		}*/
 
-		//$listEleve[] = getListeEleve($connexionBDD);
-
-		//Fermer la base
-		//$connexionBDD=null;
 
 	?>
 	<div class="row">
@@ -81,7 +58,6 @@
 	<?php
 		if(isset($_POST["delNote"])){
 			$post = $_POST['noteDel'];
-			var_dump($post);
 
 			foreach ($post as $key => $value) {
 				deleteNote($connexion, $value);
@@ -122,10 +98,6 @@
 			//Afficher les notes des élèves
 			$note = getNoteGroupe($connexion, $user);
 			showNoteGroupe($connexion, $note);
-		}else if($currentUser == 'etudiant'){
-			//Afficher les notes de l'élève
-			$note = getAllNoteEtud($connexion, $user['id_compte']);
-			showNoteEtud($connexion, $note, $user);
 		}
 
 		echo '<a href="logout.php"><p style="text-align: center">Déconnexion</p></a>';
@@ -156,41 +128,39 @@
 	<div class="column">
 	<?php
 		
+		echo '<fieldset style="width:90%;margin: 0 auto"><legend>Ajouter une note</legend>';
+		echo '<form action="#" method="post">
+				<fieldset style="width:90%;margin:0 auto"><legend>Choix de groupe</legend>
+					<select name="groupe" onchange="changeSelect()">';
 
-		if($currentUser == "professeur"){
-			echo '<fieldset style="width:90%;margin: 0 auto"><legend>Ajouter une note</legend>';
+		foreach ($note as $key => $value) {
+			echo'<option value="'.$key.'"> '.getLibGroupe($connexion, $key).' </option>';
+		}
+		echo '		</select>
+					<input type="submit" name="WhichGroupe">
+				</fieldset>
+			</form>';
+
+		if(isset($_POST["WhichGroupe"])){
+			//$groupe = $_POST["groupe"];
 			echo '<form action="#" method="post">
-					<fieldset style="width:90%;margin:0 auto"><legend>Choix de groupe</legend>
-						<select name="groupe" onchange="changeSelect()">';
+					<fieldset style="width:90%;margin:0 auto"><legend>Choix d\'élève</legend>
+						<input type="hidden" name="groupe2" value = "'.$_POST["groupe"].'">
+						<select name="etudiant" onchange="changeSelect()">';
 
-			foreach ($note as $key => $value) {
-				echo'<option value="'.$key.'"> '.getLibGroupe($connexion, $key).' </option>';
+			foreach ($note[$_POST["groupe"]] as $key => $value) {
+				echo'<option value="'.$key.'"> '.getNomPrenomEtud($connexion, $key)['nom'].' '.getNomPrenomEtud($connexion,$key)['prenom'].' </option>';
 			}
+
 			echo '		</select>
-						<input type="submit" name="WhichGroupe">
+						<input type="text" name="nomEval" placeholder="Nom eval" required="required">
+						<input type="number" name="valeur" id="valeur" placeholder="valeur" required="required" min="0" max="20">
+						<input type="submit" name="AddNote">
 					</fieldset>
 				</form>';
-
-			if(isset($_POST["WhichGroupe"])){
-				//$groupe = $_POST["groupe"];
-				echo '<form action="#" method="post">
-						<fieldset style="width:90%;margin:0 auto"><legend>Choix d\'élève</legend>
-							<input type="hidden" name="groupe2" value = "'.$_POST["groupe"].'">
-							<select name="etudiant" onchange="changeSelect()">';
-
-				foreach ($note[$_POST["groupe"]] as $key => $value) {
-					echo'<option value="'.$key.'"> '.getNomPrenomEtud($connexion, $key)['nom'].' '.getNomPrenomEtud($connexion,$key)['prenom'].' </option>';
-				}
-
-				echo '		</select>
-							<input type="text" name="nomEval" placeholder="Nom eval" required="required">
-							<input type="number" name="valeur" id="valeur" placeholder="valeur" required="required" min="0" max="20">
-							<input type="submit" name="AddNote">
-						</fieldset>
-					</form>';
-			}
-			echo '</fieldset>';
 		}
+		echo '</fieldset>';
+
 	?>
 	<?php
 

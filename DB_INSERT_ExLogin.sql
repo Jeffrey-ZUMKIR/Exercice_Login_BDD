@@ -62,7 +62,7 @@ insert into enseignement(id_compte, id_matiere, id_groupe) values
 	((SELECT id_compte FROM compte WHERE login = "GraMad"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "Web"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Bachelore")),
 	((SELECT id_compte FROM compte WHERE login = "NicVal"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "GD"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Bachelore")),
 	((SELECT id_compte FROM compte WHERE login = "NicLeh"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "Algo"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Bachelore")),
-	((SELECT id_compte FROM compte WHERE login = "MarSen"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "Japonais"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Bachelore")),
+	((SELECT id_compte FROM compte WHERE login = "MarSen"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "Japonais"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Jap1")),
 	((SELECT id_compte FROM compte WHERE login = "GraMad"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "Web"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Master")),
 	((SELECT id_compte FROM compte WHERE login = "NicVal"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "GD"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Master")),
 	((SELECT id_compte FROM compte WHERE login = "NicLeh"), (SELECT id_matiere FROM matiere WHERE lib_matiere = "Algo"), (SELECT id_groupe FROM groupe WHERE lib_groupe = "Master"));

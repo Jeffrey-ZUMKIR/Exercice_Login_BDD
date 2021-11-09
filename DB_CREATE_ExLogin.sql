@@ -71,13 +71,17 @@ create table if not exists enseignement(
 )engine = InnoDB;
 
 alter table enseignement add constraint FK_EnsMat foreign key (id_matiere) references matiere (id_matiere);
-alter table enseignement add constraint FK_EnsCpt foreign key (id_compte) references compte (id_compte);
+alter table enseignement add constraint FK_EnsCptCas foreign key (id_compte) references compte (id_compte) ON DELETE CASCADE;
 alter table enseignement add constraint FK_EnsGrp foreign key (id_groupe) references groupe (id_groupe);
 
 alter table detailgroupe add constraint FK_DGrpGrp foreign key (id_groupe) references groupe (id_groupe);
-alter table detailgroupe add constraint FK_DGrpCpt foreign key (id_compte) references compte (id_compte);
+alter table detailgroupe add constraint FK_DGrpCptCas foreign key (id_compte) references compte (id_compte) ON DELETE CASCADE;
 
 alter table compte add constraint FK_CptTyp foreign key (id_type) references type (id_type);
 
 alter table note add constraint FK_NteMat foreign key (id_matiere) references matiere (id_matiere);
-alter table note add constraint FK_NteCpt foreign key (id_compte) references compte (id_compte);
+alter table note add constraint FK_NteCptCas foreign key (id_compte) references compte (id_compte) ON DELETE CASCADE;
+
+alter table enseignement drop constraint FK_EnsCpt;
+alter table detailgroupe drop constraint FK_DGrpCpt;
+alter table note drop constraint FK_NteCpt;
